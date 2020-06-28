@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1557473005651.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "20|49|55|0|\n56|42|127|0|\n128|42|201|0|\n",
+    "hash" : "100609620",
+    "id" : "DCCF0F91",
+    "lastKnownWriteTime" : 1580063267,
+    "last_content_update" : 1580063267450,
+    "path" : "C:/Users/zlj/Desktop/Manuscript data/Fuyang/data/1&2 Description and Ordinations combination/Description.R",
+    "project_path" : "Description.R",
+    "properties" : {
+        "cursorPosition" : "364,0",
+        "scrollLine" : "343"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

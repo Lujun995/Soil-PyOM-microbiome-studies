@@ -1,0 +1,1 @@
+Source code for the manuscript: Heterogeneity induced by pyrogenic organic matter in wildfire-perturbed soils mediates bacterial community assembly processes
