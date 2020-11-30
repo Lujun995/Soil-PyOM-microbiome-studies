@@ -1,4 +1,6 @@
 GMPR<-function (comm, intersect.no = 4, ct.min = 2, verbose = FALSE) {
+  # From Dr. Jun Chen, Chen.Jun2@mayo.edu
+  
   # Computes the GMPR size factor
   #
   # Args:
@@ -100,6 +102,7 @@ na.pad<-function (vec, ind) {
 permute_differential_analysis<-function (meta.dat, comm, grp.name, adj.name = NULL, size.factor = NULL, 
             transform = 'arcsqrt', weights = NULL, strata = NULL,  perm.no = 999, 
             stage.no = 1, stage.pv = 0.05, stage.max.pct = 0.20, verbose = TRUE) {
+  # From Dr. Jun Chen, Chen.Jun2@mayo.edu
   
   # Args:
   #   meta.dat: a data frame containing the sample information
