@@ -14,9 +14,9 @@
     4. Co-occurrence Network
     5. Simulated Community
 - These five folders link to one corresponding part in our manuscript.
- - Bacterial community analysis <- 1
- - Phylogenetic coherence of habitat specialists <- 2, 3 and 4 
- - Reconstructing the bacterial community of burnt soils <- 5
+    - Bacterial community analysis <- 1
+    - Phylogenetic coherence of habitat specialists <- 2, 3 and 4 
+    - Reconstructing the bacterial community of burnt soils <- 5
 
 ### The Jiangxi folder
 - The **Jiangxi_main.r** comprises all the analyses
