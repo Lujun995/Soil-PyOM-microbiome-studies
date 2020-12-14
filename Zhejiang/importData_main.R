@@ -1,4 +1,6 @@
-#incomplete!!!!!
+#Prepare the OTU table, the taxonomy table, the phylogenetic tree 
+#and meta data for further analyses.
+#You can directly use the .RData for convenience. 
 read.csv("16S.uparse.csv",header=TRUE)->otudata
 rownames(otudata)<-otudata[,1]
 otudata<-otudata[,-1]
@@ -23,3 +25,18 @@ data<-t(data)
 read.csv("Phylogeny.csv",header=TRUE)->phylo
 ape::read.tree("16S.refined.tre")->phylotre
 ape::root(phylotre, 1, r = TRUE)->root.phylotre
+Sample.Type<-as.factor(c(rep("UnburntSoil",12),rep("PyOM",21),rep("BurntSoil",12)))
+PyOM.Type<-c(rep("Unwashed",9),rep("Washed",12))
+#meta is the PyOM scale with 1 = unburnt soils, 2 = burnt soils and 3 = PyOM.
+#However, meta here is a soil scale with 3 = UnburntSoil, 1 = PyOM, 2 = BurntSoil; therefore,
+#in the following analyses, OTU response should be reversed (-1 = positive to PyOM effect).
+meta <- c(rep(3,12),rep(1,21),rep(2,12)) 
+meta <- data.frame(meta=meta)
+Class1<-Sample.Type
+Class2<-PyOM.Type
+color1="#EE6A50"
+color2="#00CD66"
+color3="#5CACEE"
+isBurnt=34:45
+isPyOM=13:33
+isUnburnt=1:12
