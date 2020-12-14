@@ -1,3 +1,4 @@
+#import required functions and packages
 library(ggplot2)
 library(reshape2)
 library(dunn.test)
@@ -15,27 +16,26 @@ library(picante)
 library(parallel)
 library(matrixStats)
 library(ggtree)
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\1&2 Description and Ordinations combination\\grid_arrange_shared_legend.R")
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\1&2 Description and Ordinations combination\\stat_bag.R")
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\3Post-hoc Selection &Sensitive Analysis\\DAA.R")
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\3Post-hoc Selection &Sensitive Analysis\\rho2p.R")
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\3Post-hoc Selection &Sensitive Analysis\\OTU.permutate.R")
-source('C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\4PhylogenyAnalysis\\comparative.data.R')
-source('C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\4PhylogenyAnalysis\\phylo.d.R')
-source('C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\4PhylogenyAnalysis\\summary.cladehub.R')
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\4PhylogenyAnalysis\\SigClade3.R")
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\4PhylogenyAnalysis\\as.phylo.data.frame.R")
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\4PhylogenyAnalysis\\gheatmap.R")
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\4PhylogenyAnalysis\\AnnotateTre.R")
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\4PhylogenyAnalysis\\groupClade.R")
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\4PhylogenyAnalysis\\CountTaxa.R")
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\4PhylogenyAnalysis\\Eliminate.R")
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\4PhylogenyAnalysis\\getDescendants.R")
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\4PhylogenyAnalysis\\AnnotationNode.R")
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\6Network Analysis\\EasyNetwork V1.4.R")
-source("C:\\Users\\zlj\\Desktop\\Manuscript data\\Fuyang\\data\\10Simulations\\myfunc.R")
-source('C:/Users/zlj/Desktop/Manuscript data/Fuyang/data/4PhylogenyAnalysis/SigClade4.R')
-source('C:/Users/zlj/Desktop/Manuscript data/Fuyang/data/4PhylogenyAnalysis/pSpecialists.R')
+source("..\\Zhejiang\\1 Description and Ordinations\\grid_arrange_shared_legend.R")
+source("..\\Zhejiang\\1 Description and Ordinations\\stat_bag.R")
+source("..\\Zhejiang\\2 Specialists Selection and Sensitivity Analysis\\DAA.R")
+source("..\\Zhejiang\\2 Specialists Selection and Sensitivity Analysis\\rho2p.R")
+source("..\\Zhejiang\\2 Specialists Selection and Sensitivity Analysis\\OTU.permutate.R")
+source('..\\Zhejiang\\3 Phylogenetic coherence\\comparative.data.R')
+source('..\\Zhejiang\\3 Phylogenetic coherence\\phylo.d.R')
+source('..\\Zhejiang\\3 Phylogenetic coherence\\summary.cladehub.R')
+source("..\\Zhejiang\\3 Phylogenetic coherence\\as.phylo.data.frame.R")
+source("..\\Zhejiang\\3 Phylogenetic coherence\\gheatmap.R")
+source("..\\Zhejiang\\3 Phylogenetic coherence\\AnnotateTre.R")
+source("..\\Zhejiang\\3 Phylogenetic coherence\\groupClade.R")
+source("..\\Zhejiang\\3 Phylogenetic coherence\\CountTaxa.R")
+source("..\\Zhejiang\\3 Phylogenetic coherence\\Eliminate.R")
+source("..\\Zhejiang\\3 Phylogenetic coherence\\getDescendants.R")
+source("..\\Zhejiang\\3 Phylogenetic coherence\\AnnotationNode.R")
+source("..\\Zhejiang\\4 Co-ocurrence Network\\EasyNetwork V1.4.R")
+source("..\\Zhejiang\\5 Simulated Community\\myfunc.R")
+source('..\\Zhejiang\\3 Phylogenetic coherence\\SigClade4.R')
+source('..\\Zhejiang\\3 Phylogenetic coherence\\pSpecialists.R')
 
 
 scaleFUN <- function(x) sprintf("%.1f", x)
@@ -272,7 +272,7 @@ TOC= c(38.59,47.28,47.72,39.76,47.11,64.97,38.91,40.6,
        42.45,36.49,69.84,46.95,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,29.14,
        41.33,22.51,19.09,22.3,49.24,27.43,33.21,26.99,33.5,28.42,36.65)
 
-#description
+#Physichemical Properties and alpha diversity
 diversity(rare)->shannon
 shannon
 pd(rare,root.phylotre)$PD->faith
@@ -282,102 +282,11 @@ pielou
 ObservedOTU=vegan::specnumber(rare)
 ObservedOTU
 kruskal.test(ObservedOTU~SampleType)
+#It takes time. You can use the NTI.df in the .RData instead
 ses.mntd(rare,cophenetic(root.phylotre),null.model ="taxa.labels",
-         abundance.weighted=F)->NTI.df #alphaNTI, abundance=T
+         abundance.weighted=T)->NTI.df #alphaNTI, abundance=T. 
 aNTI<-data.frame(NTI=-NTI.df$mntd.obs.z,SampleType=SampleType)
 kruskal.test(aNTI$NTI~SampleType)
-# data.frame(sample=SampleType,Shannon.Wiener=shannon,alphaNTI=aNTI$NTI,Faith=faith,ObservedOTU=ObservedOTU)->description1
-# melt(description1,id=1)->description1.melt
-# factor(description1$sample,levels = c("UnburntSoil","BurntSoil","PyOM"))->description1$sample
-# levels(description1.melt$sample)<-c("Unburnt\nSoil","Burnt\nSoil","PyOM")
-# data.table(description1.melt)->description1.melt
-# description1.melt[variable=="alphaNTI",y_min := 2]  #just to set the limits of facet
-# description1.melt[variable=="alphaNTI",y_max := 7]
-# description1.melt[variable=="Shannon.Wiener",y_min := 5]
-# description1.melt[variable=="Shannon.Wiener",y_max := 6.5]
-# levels(description1.melt$variable)<-c(expression("Shannon"*"-"*"Wiener"),expression(alpha*"NTI"),"Faith",expression("Observed"~"OTUs"))
-# ggplot(data=description1.melt, aes(x=sample,y=value))+
-#   #  geom_segment(x=1,y=100,xend=2,yend=100,size=0.5,inherit.aes = F)+geom_segment(x=1,y=150,xend=3,yend=150,size=0.5,inherit.aes = F)+
-#   geom_violin(aes(fill=sample),linetype=0)+geom_boxplot(width=0.2,lwd=0.2,outlier.size = 0.7)+
-#   geom_blank(aes(y = y_min))+geom_blank(aes(y = y_max))+  #just to set the limits of facet
-#   facet_wrap(~ variable, scales="free", nrow=1, labeller = label_parsed)+
-#   theme_bw(base_size=10)+ guides(fill=FALSE)+
-#   theme(panel.grid = element_blank(),
-#         axis.title.x=element_blank(),
-#         axis.title.y=element_blank(), 
-#         axis.text.x = element_text(color="black"),
-#         axis.text.y = element_text(color="black"))+
-#   scale_fill_manual(values=c(color3,color1,color2))->pic1
-
-# data.frame(sample=SampleType,pH=pH,Shannon.Wiener=shannon,alphaNTI=aNTI$NTI)->description1
-# melt(description1,id=1)->description1.melt
-# factor(description1$sample,levels = c("UnburntSoil","BurntSoil","PyOM"))->description1$sample
-# levels(description1.melt$sample)<-c("Unburnt\nSoil","Burnt\nSoil","PyOM")
-# data.table(description1.melt)->description1.melt
-# description1.melt[variable=="alphaNTI",y_max := 13.5]
-# description1.melt[variable=="Shannon.Wiener",y_max := 6.2]
-# description1.melt[variable=="pH",y_max := 5.7]
-# levels(description1.melt$variable)<-c("pH",expression("Shannon"*"-"*"Wiener"),expression(alpha*"NTI"))
-# ggplot(data=description1.melt, aes(x=sample,y=value))+
-#   geom_violin(aes(fill=sample),linetype=0)+geom_boxplot(width=0.2,lwd=0.2,outlier.size = 0.7)+
-#   geom_blank(aes(y = y_max))+
-#   facet_wrap(~ variable, scales="free", nrow=1, labeller = label_parsed)+
-#   theme_bw(base_size=10)+ guides(fill=FALSE)+
-#   theme(panel.grid = element_blank(),
-#         axis.title.x=element_blank(),
-#         axis.title.y=element_blank(),
-#         axis.text.x = element_text(color="black"),
-#         axis.text.y = element_text(color="black"))+
-#   scale_fill_manual(values=c(color3,color1,color2))->pic1
-# 
-# data.frame(sample=SampleType,pH=pH,Water=watercontent,
-#            SoilOrganicCarbon=TOC,DissolvableOrganicCarbon=DOC)->description2
-# melt(description2,id=1)->description2.melt
-# factor(description2$sample,levels = c("UnburntSoil","BurntSoil","PyOM"))->description2$sample
-# levels(description2.melt$sample)<-c("Unburnt\nSoil","Burnt\nSoil","PyOM")
-# data.table(description2.melt)->description2.melt
-# description2.melt[variable=="pH",y_max := 5.7]  #just to set the limits of facet
-# description2.melt[variable=="Water",y_max := 0.75]
-# description2.melt[variable=="SoilOrganicCarbon",y_max := 80]
-# description2.melt[variable=="DissolvableOrganicCarbon",y_max := 550]
-# levels(description2.melt$variable)<-c("pH","Water Content (%FW)","TOC (gC/kgDw)","DOC (mgC/kgDw)")
-# ggplot(data=description2.melt, aes(x=sample,y=value))+
-#   #  geom_segment(x=1,y=100,xend=2,yend=100,size=0.5,inherit.aes = F)+geom_segment(x=1,y=150,xend=3,yend=150,size=0.5,inherit.aes = F)+
-#   geom_violin(aes(fill=sample),linetype=0)+geom_boxplot(width=0.2,lwd=0.2,outlier.size = 0.7)+
-#   geom_blank(aes(y = y_max))+  #just to set the limits of facet
-#   facet_wrap(~ variable, scales="free", nrow=1)+
-#   theme_bw(base_size=10)+ guides(fill=FALSE)+
-#   theme(panel.grid = element_blank(),
-#         axis.title.x=element_blank(),
-#         axis.title.y=element_blank(),
-#         axis.text.x = element_text(color="black"),
-#         axis.text.y = element_text(color="black"))+
-#   scale_fill_manual(values=c(color3,color1,color2))->pic2
-# 
-# data.frame(sample=SampleType,Faith=faith,Pielou=pielou,ObservedOTU=ObservedOTU,
-#            SoilOrganicCarbon=TOC,DissolvableOrganicCarbon=DOC)->descriptionS1
-# melt(descriptionS1,id=1)->descriptionS1.melt
-# factor(descriptionS1.melt$sample,levels = c("UnburntSoil","BurntSoil","PyOM"))->descriptionS1.melt$sample
-# levels(descriptionS1.melt$sample)<-c("Unburnt\nSoil","Burnt\nSoil","PyOM")
-# data.table(descriptionS1.melt)->descriptionS1.melt
-# descriptionS1.melt[variable=="Faith",y_max := 135]
-# descriptionS1.melt[variable=="SoilOrganicCarbon",y_max := 80]
-# descriptionS1.melt[variable=="DissolvableOrganicCarbon",y_max := 550]
-# descriptionS1.melt[variable=="Pielou",y_max := 0.85]
-# descriptionS1.melt[variable=="ObservedOTU",y_max := 1500]
-# levels(descriptionS1.melt$variable)<-c(expression("Faith's"~"Diversity"),expression("Pielou's"~"J"),"Observed~OTUs",
-#                                        "TOC~(gC/kgDw)","DOC~(mgC/kgDw)")
-# ggplot(data=descriptionS1.melt, aes(x=sample,y=value))+
-#   geom_violin(aes(fill=sample),linetype=0)+geom_boxplot(width=0.2,lwd=0.2)+
-#   geom_blank(aes(y = y_max))+  #just to set the limits of facet
-#   facet_wrap(~ variable, scales="free", nrow=1, labeller = label_parsed)+
-#   theme_bw(base_size=12)+ guides(fill=FALSE)+
-#   theme(panel.grid = element_blank(),
-#         axis.title.x=element_blank(),
-#         axis.title.y=element_blank(),
-#         axis.text.x = element_text(color="black"),
-#         axis.text.y = element_text(color="black"))+
-#   scale_fill_manual(values=c(color3,color1,color2))->picS1
 
 data.frame(sample=SampleType,pH=pH,Shannon.Wiener=shannon,Faith=faith,Pielou=pielou,
            ObservedOTU=ObservedOTU,alphaNTI=aNTI$NTI)->description1
@@ -405,14 +314,6 @@ ggplot(data=description1.melt, aes(x=sample,y=value))+
         axis.text.y = element_text(color="black"))+
   scale_fill_manual(values=c(color3,color1,color2))->pic1
 
-# pairwise.t.test(pH,SampleType,"fdr",pool.sd = FALSE)
-# pairwise.t.test(shannon,SampleType,"fdr",pool.sd = FALSE)
-# pairwise.t.test(faith,SampleType,"fdr",pool.sd = FALSE)
-# nortest::lillie.test(pielou[isUnburnt])
-# dunn.test::dunn.test(pielou,SampleType,"bh")
-# pairwise.t.test(ObservedOTU,SampleType,"fdr",pool.sd = FALSE)
-# pairwise.t.test(aNTI$NTI,SampleType,"fdr",pool.sd = FALSE)
-
 dunn.test::dunn.test(pH,SampleType,"bh")
 dunn.test::dunn.test(shannon,SampleType,"bh")
 dunn.test::dunn.test(faith,SampleType,"bh")
@@ -426,6 +327,7 @@ t.test(x=DOC[isBurnt],y=DOC[isUnburnt])
 #betaNTI
 drop.tip(root.phylotre,root.phylotre$tip.label[!(root.phylotre$tip.label %in% colnames(rare))])->root.phylotre.d
 cophenetic(root.phylotre.d)->root.phylotre.d.dist
+#It takes time. You can use betaNTI in .RData instead.
 ses.beta.mntd(rare,root.phylotre.d.dist,abundance.weighted = T)->betaNTI
 
 median(abs(betaNTI[isPyOM,isPyOM]),na.rm = T)  #median=4.89
@@ -470,7 +372,7 @@ for(i in 1:nrow(AllPhylum)){
 }
 
 apply(PhylumAbundance/(rowSums(PhylumAbundance)[1])>=0.01,MARGIN=2,prod)+
-  apply(PhylumAbundance/(rowSums(PhylumAbundance)[1])>=0.05,MARGIN=2,sum)->temp #abundance >1% in one sample or >0.1% in all samples
+  apply(PhylumAbundance/(rowSums(PhylumAbundance)[1])>=0.05,MARGIN=2,sum)->temp #abundance >5% in one sample or >1% in all samples
 as.data.frame(PhylumAbundance[,temp>=1])->PhylumAbundance.dominant
 rowSums(PhylumAbundance[,temp==0])->Other
 sample<-rownames(PhylumAbundance.dominant)
@@ -709,8 +611,6 @@ anno.data$response<-response
 anno.data<-anno.data[,-ncol(anno.data)]
 response<-as.data.frame(response)
 rownames(response)<-rownames(anno.data)
-# SigClade3(anno.data[,1:7],which(anno.data$response=="Positive"),Bonferroni=0.05)->PyOM.coherent
-# SigClade3(anno.data[,1:7],which(anno.data$response=="Negative"),Bonferroni=0.05)->Soil.coherent
 SigClade4(anno.data[,1:7],which(anno.data$response=="Positive"),which(anno.data$response=="Negative"),Bonferroni=0.05)->all.coherent
 temp<-matrix(0, nrow=nrow(all.coherent),ncol=3)
 colnames(temp)<-c("PyOM","Neutral","Soil")
@@ -721,49 +621,6 @@ for(i in 1:nrow(all.coherent)) {
 }
 write.csv(all.coherent,"CoherenceUnits.csv")
 
-# rep(0,length(response$response))->temp1->temp2
-# temp1[response$response=="Positive"]<- 1
-# temp2[response$response=="Negative"]<- 1
-# category<-data.frame(OTUID=anno.data$OTUID,
-#                      positives=temp1,negatives=temp2,response=response$response)
-# rm(temp1,temp2)
-
-# P=rep(1,dim(Soil.coherent)[1])
-# counts=matrix(rep(0,2*dim(Soil.coherent)[1]),ncol=2)
-# for(i in 1:dim(Soil.coherent)[1]) try({
-#   subtreeOTU=as.character(anno.data[anno.data[,as.character(Soil.coherent$Phylogeny)[i]]==as.character(Soil.coherent$taxa)[i],1])
-#   dropping=setdiff(as.character(root.phylotre$tip.label),subtreeOTU)
-#   subTree=drop.tip(root.phylotre,dropping)
-#   phylo.d(category,subTree,"OTUID","negatives",permut = 9999)->temp
-#   temp$Pval1->P[i]
-#   temp$StatesTable->counts[i,]
-# })
-# P->OverDispersal
-# colnames(counts)<-c("NullNum","SigNum")
-# cbind(Soil.coherent,OverDispersal,counts)->Soil.coherent
-# 
-# P=rep(1,dim(PyOM.coherent)[1])
-# counts=matrix(rep(0,2*dim(PyOM.coherent)[1]),ncol=2)
-# for(i in 1:dim(PyOM.coherent)[1]) try({
-#   subtreeOTU=as.character(anno.data[anno.data[,as.character(PyOM.coherent$Phylogeny)[i]]==as.character(PyOM.coherent$taxa)[i],1])
-#   dropping=setdiff(as.character(root.phylotre$tip.label),subtreeOTU)
-#   subTree=drop.tip(root.phylotre,dropping)
-#   phylo.d(category,subTree,"OTUID","positives",permut = 9999)->temp
-#   temp$Pval1->P[i]
-#   temp$StatesTable->counts[i,]
-# })
-# P->OverDispersal
-# colnames(counts)<-c("NullNum","SigNum")
-# cbind(PyOM.coherent,OverDispersal,counts)->PyOM.coherent
-# 
-# 
-# 
-# rbind(Soil.coherent,PyOM.coherent)->CoherenceUnits
-# Type<-c(rep("Soil",dim(Soil.coherent)[1]),rep("PyOM",dim(PyOM.coherent)[1]))
-# cbind(CoherenceUnits,Type)->CoherenceUnits
-# CoherenceUnits[,"OverDispersal"]<-p.adjust(CoherenceUnits[,"OverDispersal"],method="bonferroni")
-# write.csv(CoherenceUnits,"CoherenceUnits.csv")
-
 #phylogenetic tree
 anno.rare$response->response
 anno.data<-anno.rare
@@ -772,8 +629,6 @@ anno.data$response<-response
 anno.data<-anno.data[,-ncol(anno.data)]
 response<-as.data.frame(response)
 rownames(response)<-as.character(anno.rare$OTUID)
-# CoherenceUnits[order(CoherenceUnits$Phylogeny),]->temp3
-# temp3[temp3$qvalue<0.05 & temp3$OverDispersal>0.05,]->temp
 all.coherent[order(all.coherent$Phylogeny),]->temp3
 anno.data[,as.character(temp3$Phylogeny)]->temp2
 coherence<-rep(NA,dim(anno.data)[1])
@@ -1005,58 +860,3 @@ MockPic<-grid.arrange(plots[[1]],plots[[2]],plots[[3]],plots[[4]],plots[[5]],
 combined<-arrangeGrob(MockPic,legend,ncol = 1,heights = unit.c(unit(1, "npc") - lheight, lheight))
 grid.newpage()
 grid.draw(combined)
-
-
-
-#Fig3
-margin<-15
-layoutmatrix<-cbind(matrix(rep(3,7*4*margin),nrow=7),
-                    rbind(cbind(matrix(rep(NA,3*4),nrow=3),
-                                matrix(rep(1,3*4*(margin-1)),nrow = 3)),
-                          matrix(rep(2,4*4*margin),nrow=4)))
-gridExtra::grid.arrange(pic1,Shannon.vs.NMDS1,ordinationAll, layout_matrix=layoutmatrix)
-
-#pH v.s. Shannon
-index<-which(!is.na(pH))
-summary(lm(shannon ~ poly(pH,degree=2)))  
-summary(lm(shannon ~ pH))  
-qplot(pH,shannon,color=SampleType)+
-  stat_smooth(method="lm", formula=y~poly(x,2), size=0.75, color="gray15")+
-  theme_bw(12)+scale_colour_manual(name= NULL,values=c(color3,color1,color2))+
-  theme(panel.grid = element_blank(), 
-        axis.text.y = element_text(color="black"))+
-  labs(x="pH",y="Shannon-Wiener Index")+
-  annotate("text", x = 4.2, y = 6.5,
-           label = "paste(italic(R) ^ 2, \" = .64\")", parse = TRUE)+
-  annotate("text", x = 4.2, y = 6.35,
-           label = "paste(italic(P),\" = 1x\",10^-7)", parse = TRUE)->pHvsShannon
-cor.test(pH,NMDS0.5uf.point$MDS1,method = "spearman") #rho=0.73, p=5e-7
-qplot(pH,NMDS0.5uf.point$MDS1,color=SampleType)+
-  theme_bw(12)+theme(panel.grid = element_blank(), 
-                     axis.text.y = element_text(color="black"))+
-  labs(x="pH",y="NMDS1")+scale_color_manual(name= "SampleType",values=c(color3,color1,color2))+
-  annotate("text", y = 0.4, x = 4.16,
-           label = "paste(italic(rho), \" = 0.73\")", parse = TRUE)+
-  annotate("text", y = 0.35, x = 4.2,
-           label = "paste(italic(P),\" = 5x\",10^-7)", parse = TRUE)->NMDS1vspH
-
-#FigS3
-layoutmatrix<-matrix(c(1,1,2,2,3,3,3,4),nrow = 2,byrow = T)
-gridExtra::grid.arrange(PhylumBar,picS1,layout_matrix=layoutmatrix)
-#FigS8 procrustes test for BCU-BCW, BCW-Burnt and BCU-Burnt
-plot(protest1)
-plot(protest2)
-#FigS9 pH vs NMDS1,shannon
-grid_arrange_shared_legend(pHvsShannon,NMDS1vspH,nrow=1)
-
-qplot(x=NMDS0.5uf.point[,1],y=NMDS0.5uf.point[,2],aes(color=SampleType),size=I(2))+
-  geom_segment(aes(x=NMDS0.5uf.point[1:12,1],y=NMDS0.5uf.point[1:12,2],
-                   xend=NMDS0.5uf.point[13:24,1],yend=NMDS0.5uf.point[13:24,2]),arrow=arrow(length=unit(0.2,"cm")))+
-  geom_bag(aes(x=NMDS0.5uf.point[25:36,1],y=NMDS0.5uf.point[25:36,2]),prop=1,alpha=0.4,color=color3,fill=color3)+
-  theme_bw(12) + theme(panel.grid = element_blank(),
-                       #                         legend.key.height=unit(0.35,"inch"),
-                       axis.title.x=element_blank(),
-                       axis.text.x=element_blank(),
-                       axis.title.y=element_blank(),
-                       axis.text.y=element_blank()) + 
-  scale_color_manual(values = c(color3,color1,color2))
