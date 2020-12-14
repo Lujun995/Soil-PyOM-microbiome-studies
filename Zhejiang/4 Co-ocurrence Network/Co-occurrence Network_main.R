@@ -1,6 +1,6 @@
 #data depends on D:\World Forest Data\Fuyang\data\.Rdata, ordination result and post-hoc selection result
 library(ggplot2)
-load("..\\.Rdata")
+load("..\\.RData")
 dget("NMDSresult")->w0.5NMDS.point
 dget("anno.data")->anno.data
 source("EasyNetwork V1.4.R")
@@ -42,29 +42,3 @@ nodes<-c(as.matrix(edges[,c("From","To")]))
 nodes<-nodes[!duplicated(nodes)]
 anno.data[anno.data$X.OTU.ID %in% nodes,]->nodes
 write.csv(nodes,"nodes.csv")
-#relative abundance in different group
-ggplot(w0.5NMDS.point)+geom_dotplot(aes(MDS1))+
-  scale_color_manual(values = Sample.Type)+scale_fill_manual(values = Sample.Type)
-group1<-which(w0.5NMDS.point$MDS1>0.2)
-group2<-which(w0.5NMDS.point$MDS1>-0.1 & w0.5NMDS.point$MDS1<0.2)
-group3<-which(w0.5NMDS.point$MDS1< -0.1)
-variable<-as.character(nodes$X.OTU.ID)
-tempfunc<-function(comm,group,variable){
-  comm[group,variable]->temp
-  apply(temp,MARGIN=2,mean)->MEAN
-  apply((temp==0),MARGIN=2,sum)/length(group)->sparsity
-  data.frame(mean=MEAN,sparsity=sparsity)
-}
-cbind(tempfunc(rare,group1,variable),tempfunc(rare,group2,variable),tempfunc(rare,group3,variable))->temp
-write.csv(temp,"relativeabundance.csv")
-#some visulazation
-ggplot(w0.5NMDS.point)+
-  geom_dotplot(aes(MDS1,color=Sample.Type,fill=Sample.Type),dotsize=0.5)+
-  theme_classic(12) + theme(panel.grid = element_blank(),legend.position = "right",
-                     axis.title.y=element_blank(),
-                     axis.text.y=element_blank(),
-                     axis.ticks.y=element_blank(),
-                     axis.line.y = element_blank()) + 
-  labs(x="NMDS1")+
-  scale_colour_manual(values = c(color1,color2,color3)) + 
-  scale_fill_manual(values = c(color1,color2,color3))
