@@ -1,7 +1,7 @@
 # Habitat heterogeneity induced by pyrogenic organic matter in wildfire-perturbed soils mediates bacterial community assembly processes.
 
 - This project contains the source code from the manuscript *Habitat heterogeneity induced by pyrogenic organic matter in wildfire-perturbed soils mediates bacterial community assembly processes.*
-- This study collected soil and PyOM samples from two independent sites (the **Zhejiang** site and the **Jiangxi** site) and their data and source code were deposited into the two folders **Zhejiang** and **Jiangxi**, respectively. 
+- This study investigated microbiomes in soil and PyOM samples collected from two independent sites (the **Zhejiang** site and the **Jiangxi** site). Data and source code of these two sites were deposited into two folders **Zhejiang** and **Jiangxi**, respectively. 
 - Documents ended with **\_main.R** are the main R script for the corresponding analyses. Those ended simply with **.R** are required functions. Those ended with **.csv**, **.tre**, **.d**, **.RData** etc. are required datasets.
 
 ### The Zhejiang folder
@@ -19,5 +19,5 @@
  - Reconstructing the bacterial community of burnt soils <- 5
 
 ### The Jiangxi folder
-- The Jiangxi folder comprises all the analyses
+- The **Jiangxi_main.r** comprises all the analyses
 - Each analysis is separated using comments. 
