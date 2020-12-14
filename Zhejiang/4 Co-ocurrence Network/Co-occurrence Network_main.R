@@ -1,9 +1,10 @@
 #data depends on D:\World Forest Data\Fuyang\data\.Rdata, ordination result and post-hoc selection result
 library(ggplot2)
-load("D:\\World Forest Data\\Fuyang\\data")
+load("..\\.Rdata")
 dget("NMDSresult")->w0.5NMDS.point
 dget("anno.data")->anno.data
 source("EasyNetwork V1.4.R")
+source("MIC2p.R")
 #partial regression with spearman correlation can control the type I error, even for an unbalanced design
 #but it can only control data fitting model as X=f(Y)+Ci+e, where f(Y)is a linear or unlinear function of Y 
 #and Ci is the main effect of different categories.
@@ -67,34 +68,3 @@ ggplot(w0.5NMDS.point)+
   labs(x="NMDS1")+
   scale_colour_manual(values = c(color1,color2,color3)) + 
   scale_fill_manual(values = c(color1,color2,color3))
-
-#tested part(network of all)
-# cor(rare.transformed.filtered,method="spearman")->rho.all
-# minerva::mine(rare.transformed.filtered,n.cores=4)$MIC->MIC.all
-# r2p(rho.all,n=45)->rho.all.p
-# MIC2p(MIC.all)->MIC.all.p
-# mat2vec(rho.all)->rho.all
-# mat2vec(MIC.all)->MIC.all
-# mat2vec(rho.all.p)->rho.all.p
-# mat2vec(MIC.all.p)->MIC.all.p
-# p.adjust(rho.all.p$value,method="BH")->adj.p
-# cbind(rho.all.p,adj.p)->rho.all.p
-# p.adjust(MIC.all.p$value,method="BH")->adj.p
-# cbind(MIC.all.p,adj.p)->MIC.all.p
-# cbind(MIC.all.p,rho.all.p,rho)->edges.all
-# dim(edges.all[edges.all[,8]<0.001&edges.all[,4]<0.05,])[1]
-# edges.all[edges.all[,8]<0.001&edges.all[,4]<0.05,c(2,3,1,4,5,8,9)]->edges.all
-# names(edges.all)<-c("Source","Target","MIC.p","MIC.q","Spearman.p","Spearman.q","rho")
-# sign(edges.all$rho)->edges.all$rho
-# write.csv(edges.all,"edges.all.csv")
-# nodes.all<-c(as.matrix(edges.all[,c("Source","Target")]))
-# nodes.all<-nodes.all[!duplicated(nodes.all)]
-# anno.data[anno.data$X.OTU.ID %in% nodes.all,]->nodes.all
-# write.csv(nodes.all,"nodes.all.csv")
-# dim(edges.all[edges.all$MIC.q<0.0001&edges.all$Spearman.q<0.005,])[1]
-# edges.all[edges.all$MIC.q<0.0001&edges.all$Spearman.q<0.005,]->edges.all.filter
-# write.csv(edges.all.filter,"edges.all.filter.csv")
-# nodes.all.filter<-c(as.matrix(edges.all.filter[,c("Source","Target")]))
-# nodes.all.filter<-nodes.all.filter[!duplicated(nodes.all.filter)]
-# anno.data[anno.data$X.OTU.ID %in% nodes.all.filter,]->nodes.all.filter
-# write.csv(nodes.all.filter,"nodes.all.filter.csv")
