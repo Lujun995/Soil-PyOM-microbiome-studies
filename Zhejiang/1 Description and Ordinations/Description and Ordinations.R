@@ -1,6 +1,7 @@
-#dependent on .Rdata, alpha-NTI from 2Ordination&Permanova
-load("D:\\World Forest Data\\Fuyang\\data\\.Rdata")
+#dependent on .Rdata from the parent folder
+load("..\\.Rdata")
 
+#import required packages and functions
 library(ggplot2)
 library(reshape2)
 library(dunn.test)
@@ -205,7 +206,10 @@ isPyOM<-13:33
 isBurnt<-34:45
 factor(Sample.Type,levels = c("UnburntSoil","BurntSoil","PyOM"))->Sample.Type
 
-#data
+
+
+
+#data input
 diversity(rare)->shannon
 shannon
 kruskal.test(shannon~Sample.Type)
@@ -234,67 +238,11 @@ DOC=c(4.85,11.4,1.60,39.28,50.45,65.97,84.02,41.37,68.56 ,50.52,93.45,74.20,
 TOC=c(13.40,55.76,10.50,85.13,104.95,143.30,89.89,101.75,171.22,112.90,111.42,108.90,
       rep(NA,21),
       78.25,65.99,109.10,92.76,55.78,67.60,67.69,76.76,38.19,39.13,115.40,141.70)#no difference
-# data.frame(sample=Sample.Type,pH=pH,Shannon.Wiener=shannon,alphaNTI=aNTI$NTI)->description1
-# data.frame(sample=Sample.Type,Faith=faith,Pielou=pielou,ObservedOTU=ObservedOTU,
-#            SoilOrganicCarbon=TOC,DissolvableOrganicCarbon=DOC)->descriptionS1
 
-# #Physichemical Properties Fig1
-# melt(description1,id=1)->description1.melt
-# factor(description1$sample,levels = c("UnburntSoil","BurntSoil","PyOM"))->description1$sample
-# levels(description1.melt$sample)<-c("Unburnt\nSoil","Burnt\nSoil","PyOM")
-# data.table(description1.melt)->description1.melt
-# description1.melt[variable=="alphaNTI",y_min := 1]  #just to set the limits of facet
-# description1.melt[variable=="alphaNTI",y_max := 9]
-# description1.melt[variable=="Shannon.Wiener",y_min := 4]
-# description1.melt[variable=="Shannon.Wiener",y_max := 7]
-# description1.melt[variable=="pH",y_min := 3.5]
-# description1.melt[variable=="pH",y_max := 7]
-# levels(description1.melt$variable)<-c("pH",expression("Shannon"*"-"*"Wiener"),expression(alpha*"NTI"))
-# ggplot(data=description1.melt, aes(x=sample,y=value))+
-#   #  geom_segment(x=1,y=100,xend=2,yend=100,size=0.5,inherit.aes = F)+geom_segment(x=1,y=150,xend=3,yend=150,size=0.5,inherit.aes = F)+
-#   geom_violin(aes(fill=sample),linetype=0)+geom_boxplot(width=0.2,lwd=0.2,outlier.size = 0.7)+
-#   geom_blank(aes(y = y_min))+geom_blank(aes(y = y_max))+  #just to set the limits of facet
-#   facet_wrap(~ variable, scales="free", nrow=1, labeller = label_parsed)+
-#   theme_bw(base_size=10)+ guides(fill=FALSE)+
-#   theme(panel.grid = element_blank(),
-#         axis.title.x=element_blank(),
-#         axis.title.y=element_blank(), 
-#         axis.text.x = element_text(color="black"),
-#         axis.text.y = element_text(color="black"))+
-#   scale_fill_manual(values=c(color3,color1,color2))->pic1
-# 
-# #Physichemical Properties FigS1
-# melt(descriptionS1,id=1)->descriptionS1.melt
-# factor(descriptionS1.melt$sample,levels = c("UnburntSoil","BurntSoil","PyOM"))->descriptionS1.melt$sample
-# levels(descriptionS1.melt$sample)<-c("Unburnt\nSoil","Burnt\nSoil","PyOM")
-# #mylabel = bquote(Delta*italic(T)[max]~.(format(mymean,digits=3))*''%+-%''*
-# #                   .(format(mySE,digits=2))*degree*C)
-# data.table(descriptionS1.melt)->descriptionS1.melt
-# descriptionS1.melt[variable=="Faith",y_min := 50]
-# descriptionS1.melt[variable=="Faith",y_max := 200]
-# descriptionS1.melt[variable=="SoilOrganicCarbon",y_min := 0]
-# descriptionS1.melt[variable=="SoilOrganicCarbon",y_max := 200]
-# descriptionS1.melt[variable=="DissolvableOrganicCarbon",y_min := 0]
-# descriptionS1.melt[variable=="DissolvableOrganicCarbon",y_max := 100]
-# descriptionS1.melt[variable=="Pielou",y_max := 0.9]
-# descriptionS1.melt[variable=="ObservedOTU",y_max := 2500]
-# levels(descriptionS1.melt$variable)<-c(expression("Faith's"~"Diversity"),expression("Pielou's"~"J"),"Observed~OTUs",
-#                                      "TOC~(gC/kgDw)","DOC~(mgC/kgDw)")
-# #segdata<-data.frame(sample=levels(description.melt$sample),variable=levels(description.melt$variable),)
-# ggplot(data=descriptionS1.melt, aes(x=sample,y=value))+
-#   #  geom_segment(x=1,y=100,xend=2,yend=100,size=0.5,inherit.aes = F)+geom_segment(x=1,y=150,xend=3,yend=150,size=0.5,inherit.aes = F)+
-#   geom_violin(aes(fill=sample),linetype=0)+geom_boxplot(width=0.2,lwd=0.2)+
-#   geom_blank(aes(y = y_min))+geom_blank(aes(y = y_max))+  #just to set the limits of facet
-#   facet_wrap(~ variable, scales="free", nrow=1, labeller = label_parsed)+
-#   theme_bw(base_size=12)+ guides(fill=FALSE)+
-#   theme(panel.grid = element_blank(),
-#         axis.title.x=element_blank(),
-#         axis.title.y=element_blank(), 
-#         axis.text.x = element_text(color="black"),
-#         axis.text.y = element_text(color="black"))+
-#   scale_fill_manual(values=c(color3,color1,color2))->picS1
 
-#Physichemical Properties Fig1
+
+
+#Physichemical Properties and alpha diversity (Fig 2 a-f)
 data.frame(sample=Sample.Type,pH=pH,Shannon.Wiener=shannon,Faith=faith,Pielou=pielou,
            ObservedOTU=ObservedOTU,alphaNTI=aNTI$NTI)->description1
 melt(description1,id=1)->description1.melt
@@ -321,14 +269,13 @@ ggplot(data=description1.melt, aes(x=sample,y=value))+
         axis.text.y = element_text(color="black"))+
   scale_fill_manual(values=c(color3,color1,color2))->pic1
 
-#Physichemical Properties FigS1
+#SOC & DOC (Fig S6a)
 melt(descriptionS1,id=1)->descriptionS1.melt
 factor(descriptionS1.melt$sample,levels = c("UnburntSoil","BurntSoil","PyOM"))->descriptionS1.melt$sample
 levels(descriptionS1.melt$sample)<-c("Unburnt\nSoil","Burnt\nSoil","PyOM")
 data.table(descriptionS1.melt)->descriptionS1.melt
 levels(descriptionS1.melt$variable)<-c(expression("Faith's"~"Diversity"),expression("Pielou's"~"J"),"Observed~OTUs",
                                      "TOC~(gC/kgDw)","DOC~(mgC/kgDw)")
-#segdata<-data.frame(sample=levels(description.melt$sample),variable=levels(description.melt$variable),)
 ggplot(data=descriptionS1.melt, aes(x=sample,y=value))+
   #  geom_segment(x=1,y=100,xend=2,yend=100,size=0.5,inherit.aes = F)+geom_segment(x=1,y=150,xend=3,yend=150,size=0.5,inherit.aes = F)+
   geom_violin(aes(fill=sample),linetype=0)+geom_boxplot(width=0.2,lwd=0.2)+
@@ -341,8 +288,6 @@ ggplot(data=descriptionS1.melt, aes(x=sample,y=value))+
         axis.text.x = element_text(color="black"),
         axis.text.y = element_text(color="black"))+
   scale_fill_manual(values=c(color3,color1,color2))->picS1
-
-
 
 #normality test failed hence wilcox-bonferroni was used
 nortest::lillie.test(shannon[isUnburnt])
@@ -362,21 +307,9 @@ t.test(description$SoilOrganicCarbon~Sample.Type,na.action = "na.omit",var.equal
 t.test(description$DissolvableOrganicCarbon~Sample.Type,na.action = "na.omit",var.equal = FALSE)
 
 
-#Charcoal Elements
-read.csv("CharcoalElementsAtom.csv",head=TRUE)->elementsRatio
-names(elementsRatio)[1]<-c("C")
-cbind(sample=1:12,elementsRatio)->elementsRatio
-elementsRatio.m<-melt(elementsRatio,id=1)
-ggplot(elementsRatio.m,aes(sample,value))+
-  geom_col(aes(fill=variable),position = position_stack(reverse = TRUE))+
-  scale_fill_manual(name="Elements",values = brewer.pal(12,"Paired")[c(2,4,6,10,7)])+
-  #scale_fill_brewer(type="qual",palette = 6,name="Elements")+
-  xlab("PyOM")+ylab("Ratio (atom) /%")+
-  theme_bw(12)+ 
-  theme(panel.grid = element_blank(), axis.text.x = element_blank(),
-        axis.text.y = element_text(color="black"))->PyOM.element.ratio
 
-#PhylumAbundance
+
+#PhylumAbundance (Fig 5a)
 read.csv("PhylumAbundance.csv",header =TRUE)->phylumAbundance
 cbind(Sample.Type,phylumAbundance)->phylumAbundance
 phylumAbundance.m<-melt(phylumAbundance,id=c(1,2))
@@ -394,30 +327,34 @@ ggplot(phylumAbundance.m,aes(sample,value))+
         axis.text.x = element_blank(),
         axis.text.y = element_text(color="black"))->phylumabundance.pic
 
-#Ordination
+
+
+
+#Ordination (Fig 4a, Fig S3)
 GUniFrac(rare,root.phylotre)->unifrac
 unifrac$unifracs[,,"d_0.5"]->w0.5unifrac
-adonis(w0.5unifrac~Class1,permutations = 999999) #p<e-6,based on factor model
+#adonis(w0.5unifrac~Class1,permutations = 999999) #p<e-6,based on factor model
 adonis(w0.5unifrac~meta$meta,permutations = 999999) #p<e-6,based on linear model, more precise
-adonis(w0.5unifrac[isPyOM,isPyOM]~Class2) #p=0.894
+adonis(w0.5unifrac[isPyOM,isPyOM]~Class2) #p=0.894, Washed v.s. unwashed
 
 metaMDS(comm = w0.5unifrac,k =3)->NMDS0.5uf #stress=0.06
 as.data.frame(NMDS0.5uf$points)->NMDS0.5uf.point
 NMDS0.5uf.point$MDS1<- -NMDS0.5uf.point$MDS1 #-MDS1 was used for convenience, the same direct as PyOM gradient
+#Fig 4a
 myfunc3(NMDS0.5uf.point,Sample.Type,color=c(color3,color1,color2))->ordinationAll
-myfunc2(NMDS0.5uf.point[isPyOM,],PyOM.Type,color=RColorBrewer::brewer.pal(10, "Set3")[c(6,10)])->ordinationSub
+#Fig S3
+myfunc2(NMDS0.5uf.point[isPyOM,],PyOM.Type,color=RColorBrewer::brewer.pal(10, "Set3")[c(6,10)])->ordinationSub 
 
-#Shannon vs NMDS1
+
+
+
+#Correlations between NMDS1, alpha diversity and pH (Fig 3 left part)
 Shannon.NMDS1<-data.frame(sample=Sample.Type,Shannon=shannon,NMDS1=NMDS0.5uf.point$MDS1)
 summary(lm(shannon ~ poly(NMDS0.5uf.point$MDS1,degree=2)))
 summary(lm(faith ~ poly(NMDS0.5uf.point$MDS1,degree=2)))
 summary(lm(pielou ~ poly(NMDS0.5uf.point$MDS1,degree=2)))
 summary(lm(ObservedOTU ~ poly(NMDS0.5uf.point$MDS1,degree=2)))
 ggplot(data=Shannon.NMDS1,aes(x=NMDS1,y=Shannon))+
-  annotate("text", x = 0.25, y = 6.5,
-           label = "paste(italic(R) ^ 2, \" = .53\")", parse = TRUE)+
-  annotate("text", x = 0.25, y = 6.35,
-           label = "paste(italic(P),\" = \",10^-7)", parse = TRUE)+
   geom_point(aes(color=sample))+
   stat_smooth(method="lm", formula=y~poly(x,2), size=0.75, color="gray15")+
   theme_bw(12)+
@@ -427,7 +364,7 @@ ggplot(data=Shannon.NMDS1,aes(x=NMDS1,y=Shannon))+
         legend.position = c(0.5,0.1),legend.direction= "horizontal",
         legend.background = element_rect(color = "black",size = 0.25, linetype = "solid"),
         axis.text.y = element_text(color="black"))->Shannon.vs.NMDS1
-#pH vs NMDS1
+
 index<-which(!is.na(pH))
 summary(lm(shannon[index] ~ poly(pH[index],degree=2)))  
 qplot(pH,shannon,color=Sample.Type)+
@@ -475,115 +412,16 @@ qplot(NMDS0.5uf.point$MDS1,faith,color=Sample.Type)+
   theme(panel.grid = element_blank(), 
         axis.text.y = element_text(color="black"))+
   labs(x="NMDS1",y="Faith's Diversity")->MDS1vsFaith
-
+#Fig 3 (left part)
 grid_arrange_shared_legend(NMDS1vspH,pHvsShannon,MDS1vsShannon,MDS1vsFaith,MDS1vsPielou,
                            MDS1vsOTUnum,ncol=2,nrow = 3,position = "bottom")
 
-interp(NMDS0.5uf.point$MDS1,NMDS0.5uf.point$MDS3,shannon,nx = 100, ny = 100)->temp
-temp$z->temp2
-rownames(temp2)<-temp$x
-colnames(temp2)<-temp$y
-reshape2::melt(temp2)->temp3
-names(temp3)<-c("NMDS1","NMDS3","shannon")
-ggplot() + 
-  geom_raster(data = temp3, aes(x = NMDS1, y = NMDS3, fill=shannon), interpolate = F) + 
-  geom_point(data = NMDS0.5uf.point, aes(x=MDS1, y=MDS3, color=Sample.Type),show.legend = FALSE) +
-  scale_fill_gradientn(colors=c("white", "khaki1", "darkmagenta"),na.value = "grey90",name="Shannon") + 
-  theme_bw(12)+scale_colour_manual(name= NULL,values=c(color3,color1,color2))+
-  theme(panel.grid = element_blank(), 
-        axis.text.y = element_text(color="black"))->shannon.map
-
-interp(NMDS0.5uf.point$MDS1,NMDS0.5uf.point$MDS3,faith,nx = 100, ny = 100)->temp
-temp$z->temp2
-rownames(temp2)<-temp$x
-colnames(temp2)<-temp$y
-reshape2::melt(temp2)->temp3
-names(temp3)<-c("NMDS1","NMDS3","value")
-ggplot() + 
-  geom_raster(data = temp3, aes(x = NMDS1, y = NMDS3, fill=value), interpolate = F) + 
-  geom_point(data = NMDS0.5uf.point, aes(x=MDS1, y=MDS3, color=Sample.Type)) +
-  scale_fill_gradientn(colors=c("white", "green4", "firebrick3"),na.value = "grey90") + 
-  theme_bw(12)+scale_colour_manual(name= NULL,values=c(color3,color1,color2))+
-  theme(panel.grid = element_blank(), 
-        axis.text.y = element_text(color="black"))->faith.map
-
-interp(NMDS0.5uf.point$MDS1,NMDS0.5uf.point$MDS3,faith,nx = 100, ny = 100)->temp
-temp$z->temp2
-rownames(temp2)<-temp$x
-colnames(temp2)<-temp$y
-reshape2::melt(temp2)->temp3
-names(temp3)<-c("NMDS1","NMDS3","value")
-ggplot() + 
-  geom_raster(data = temp3, aes(x = NMDS1, y = NMDS3, fill=value), interpolate = F) + 
-  geom_point(data = NMDS0.5uf.point, aes(x=MDS1, y=MDS3, color=Sample.Type)) +
-  scale_fill_gradientn(colors=c("white", "green4", "firebrick3"),na.value = "grey90") + 
-  theme_bw(12)+scale_colour_manual(name= NULL,values=c(color3,color1,color2))+
-  theme(panel.grid = element_blank(), 
-        axis.text.y = element_text(color="black"))->faith.map
-
-interp(NMDS0.5uf.point$MDS1,NMDS0.5uf.point$MDS3,pielou,nx = 100, ny = 100)->temp
-temp$z->temp2
-rownames(temp2)<-temp$x
-colnames(temp2)<-temp$y
-reshape2::melt(temp2)->temp3
-names(temp3)<-c("NMDS1","NMDS3","value")
-ggplot() + 
-  geom_raster(data = temp3, aes(x = NMDS1, y = NMDS3, fill=value), interpolate = F) + 
-  geom_point(data = NMDS0.5uf.point, aes(x=MDS1, y=MDS3, color=Sample.Type)) +
-  scale_fill_gradientn(colors=c("white", "green4", "firebrick3"),na.value = "grey90") + 
-  theme_bw(12)+scale_colour_manual(name= NULL,values=c(color3,color1,color2))+
-  theme(panel.grid = element_blank(), 
-        axis.text.y = element_text(color="black"))->pielou.map
-
-interp(NMDS0.5uf.point$MDS1,NMDS0.5uf.point$MDS3,ObservedOTUS,nx = 100, ny = 100)->temp
-temp$z->temp2
-rownames(temp2)<-temp$x
-colnames(temp2)<-temp$y
-reshape2::melt(temp2)->temp3
-names(temp3)<-c("NMDS1","NMDS3","value")
-ggplot() + 
-  geom_raster(data = temp3, aes(x = NMDS1, y = NMDS3, fill=value), interpolate = F) + 
-  geom_point(data = NMDS0.5uf.point, aes(x=MDS1, y=MDS3, color=Sample.Type)) +
-  scale_fill_gradientn(colors=c("white", "green4", "firebrick3"),na.value = "grey90") + 
-  theme_bw(12)+scale_colour_manual(name= NULL,values=c(color3,color1,color2))+
-  theme(panel.grid = element_blank(), 
-        axis.text.y = element_text(color="black"))->ObservedOTUS.map
-
-interp(NMDS0.5uf.point$MDS1,NMDS0.5uf.point$MDS3,pH,nx = 100, ny = 100)->temp
-temp$z->temp2
-rownames(temp2)<-temp$x
-colnames(temp2)<-temp$y
-reshape2::melt(temp2)->temp3
-names(temp3)<-c("NMDS1","NMDS3","value")
-ggplot() + 
-  geom_raster(data = temp3, aes(x = NMDS1, y = NMDS3, fill=value), interpolate = F) + 
-  geom_point(data = NMDS0.5uf.point, aes(x=MDS1, y=MDS3, color=Sample.Type)) +
-  scale_fill_gradientn(colors=c("white", "green4", "firebrick3"),na.value = "grey90") + 
-  theme_bw(12)+scale_colour_manual(name= NULL,values=c(color3,color1,color2))+
-  theme(panel.grid = element_blank(), 
-        axis.text.y = element_text(color="black"))->pH.map
 
 
-#Procrustes test for BCU-BCW, BCW-Burnt and BCU-Burnt
-vegan::protest(X=NMDS0.5uf.point[13:21,],
-               Y=NMDS0.5uf.point[c(23,24,25,26,28,30,31,32,33),],
-               permutation=99999,symmetric=FALSE) #Unwashed vs. washed
+
+#Procrustes test (Fig 4c)
 vegan::protest(X=NMDS0.5uf.point[22:33,],Y=NMDS0.5uf.point[34:45,],
-               permutation=99999,symmetric=FALSE)->protest1 #Washed, p=0.003, R=0.68
-vegan::protest(X=NMDS0.5uf.point[13:21,],
-               Y=NMDS0.5uf.point[c(23,24,25,26,28,30,31,32,33)+12,],
-               permutation=99999,symmetric=FALSE)->protest2 #Unwashed, p=4e-4, R=.84
-
-qplot(x=NMDS0.5uf.point[1:45,1],y=NMDS0.5uf.point[1:45,2],aes(color=Sample.Type),size=I(2))+
-  geom_segment(aes(xend=NMDS0.5uf.point[22:33,1],yend=NMDS0.5uf.point[22:33,2],
-                   x=NMDS0.5uf.point[34:45,1],y=NMDS0.5uf.point[34:45,2]),arrow=arrow(length=unit(0.2,"cm")))+
-  theme_bw(12) + theme(panel.grid = element_blank(),
-                       #                         legend.key.height=unit(0.35,"inch"),
-                       axis.title.x=element_blank(),
-                       axis.text.x=element_blank(),
-                       axis.title.y=element_blank(),
-                       axis.text.y=element_blank()) + 
-  scale_color_manual(values = c(color3,color1,color2))
+               permutation=99999,symmetric=FALSE)->protest1 #p=0.003, R=0.68
 
 qplot(x=NMDS0.5uf.point[1:45,1],y=NMDS0.5uf.point[1:45,3],aes(color=Sample.Type),size=I(2))+
   geom_segment(aes(xend=NMDS0.5uf.point[22:33,1],yend=NMDS0.5uf.point[22:33,3],
@@ -591,24 +429,3 @@ qplot(x=NMDS0.5uf.point[1:45,1],y=NMDS0.5uf.point[1:45,3],aes(color=Sample.Type)
   geom_bag(aes(x=NMDS0.5uf.point[1:12,1],y=NMDS0.5uf.point[1:12,3]),prop=1,alpha=0.4,color=color3,fill=color3)+
   theme_bw(12) + theme(panel.grid = element_blank()) + xlab("NMDS1")+ylab("NMDS3")+
   scale_color_manual(values = c(color3,color1,color2))
-  
-
-
-
-#Final Output
-#Fig3
-margin<-12
-layoutmatrix<-cbind(matrix(rep(3,7*4*margin),nrow=7),
-                    rbind(cbind(matrix(rep(NA,3*4),nrow=3),
-                                matrix(rep(1,3*4*(margin-1)),nrow = 3)),
-                          matrix(rep(2,4*4*margin),nrow=4)))
-gridExtra::grid.arrange(pic1,Shannon.vs.NMDS1,ordinationAll, layout_matrix=layoutmatrix)
-#FigS3
-layoutmatrix<-matrix(c(1,1,2,2,3,3,3,4),nrow = 2,byrow = T)
-gridExtra::grid.arrange(phylumabundance.pic,ordinationSub,picS1,
-                        PyOM.element.ratio,layout_matrix=layoutmatrix)
-#FigS8 procrustes test for BCU-BCW, BCW-Burnt and BCU-Burnt
-plot(protest1)
-plot(protest2)
-#FigS9 pH vs NMDS1,shannon
-grid_arrange_shared_legend(pHvsShannon,NMDS1vspH,nrow=1)
