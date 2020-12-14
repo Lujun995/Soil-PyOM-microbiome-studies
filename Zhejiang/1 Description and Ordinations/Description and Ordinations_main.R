@@ -13,9 +13,8 @@ library(vegan)
 library(picante)
 library(data.table)
 library(GUniFrac)
-library(vegan)
-library(picante)
 library(parallel)
+source("ses.beta.mntd.R")
 source("grid_arrange_shared_legend.R")
 source("stat_bag.R")
 scaleFUN <- function(x) sprintf("%.1f", x)
@@ -209,7 +208,7 @@ factor(Sample.Type,levels = c("UnburntSoil","BurntSoil","PyOM"))->Sample.Type
 
 
 
-#data input
+#Physichemical Properties and alpha diversity (Fig 2 a-f)
 diversity(rare)->shannon
 shannon
 kruskal.test(shannon~Sample.Type)
@@ -239,10 +238,6 @@ TOC=c(13.40,55.76,10.50,85.13,104.95,143.30,89.89,101.75,171.22,112.90,111.42,10
       rep(NA,21),
       78.25,65.99,109.10,92.76,55.78,67.60,67.69,76.76,38.19,39.13,115.40,141.70)#no difference
 
-
-
-
-#Physichemical Properties and alpha diversity (Fig 2 a-f)
 data.frame(sample=Sample.Type,pH=pH,Shannon.Wiener=shannon,Faith=faith,Pielou=pielou,
            ObservedOTU=ObservedOTU,alphaNTI=aNTI$NTI)->description1
 melt(description1,id=1)->description1.melt
@@ -305,6 +300,41 @@ pairwise.t.test(aNTI$NTI,Sample.Type,"fdr",pool.sd = FALSE)
 #normality holds so t-test is OK
 t.test(description$SoilOrganicCarbon~Sample.Type,na.action = "na.omit",var.equal = TRUE)
 t.test(description$DissolvableOrganicCarbon~Sample.Type,na.action = "na.omit",var.equal = FALSE)
+
+
+
+
+#betaNTI (Fig S7a)
+drop.tip(root.phylotre,root.phylotre$tip.label[!(root.phylotre$tip.label %in% colnames(rare))])->root.phylotre.d
+cophenetic(root.phylotre.d)->root.phylotre.d.dist
+#It takes a long time. Instead, use the pre-calculated betaNTI: dget("betaNTI.d")->betaNTI
+ses.beta.mntd(rare,root.phylotre.d.dist,abundance.weighted = T)->betaNTI
+median(abs(betaNTI[isPyOM,isPyOM]),na.rm = T)  #median=7.45
+median(abs(betaNTI[isBurnt,isBurnt]),na.rm = T)  #median=10.83
+median(abs(betaNTI[isUnburnt,isUnburnt]),na.rm = T)  #median=11.81
+
+mat2vec(betaNTI[isUnburnt,isUnburnt])->betaNTI.U
+mat2vec(betaNTI[isPyOM,isPyOM])->betaNTI.P
+mat2vec(betaNTI[isBurnt,isBurnt])->betaNTI.B
+mat2vec(betaNTI[isUnburnt,isBurnt])->betaNTI.UB
+mat2vec(betaNTI[isUnburnt,isPyOM])->betaNTI.UP
+mat2vec(betaNTI[isBurnt,isPyOM])->betaNTI.BP
+betaNTI.U[,2]<-"U"; betaNTI.P[,2]<-"P"; betaNTI.B[,2]<-"B"
+betaNTI.UB[,2]<-"UB"; betaNTI.UP[,2]<-"UP"; betaNTI.BP[,2]<-"BP"
+rbind(betaNTI.U[,1:2],betaNTI.B[,1:2],betaNTI.P[,1:2],
+      betaNTI.UB[,1:2],betaNTI.UP[,1:2],betaNTI.BP[,1:2])->betaNTI.v
+betaNTI.v$rowname<-as.factor(betaNTI.v$rowname)
+betaNTI.v$rowname<-factor(betaNTI.v$rowname,levels=c("U","B","P","UB","UP","BP"))
+dunn.test::dunn.test(betaNTI.v$value,betaNTI.v$rowname,method = "bh")
+ggplot(data=betaNTI.v, aes(x=rowname,y=value))+
+  geom_violin(aes(fill=rowname),linetype=0)+geom_boxplot(width=0.2,lwd=0.2,outlier.size = 1.5)+
+  theme_bw(base_size=12)+ guides(fill=FALSE)+
+  theme(panel.grid = element_blank(),
+        axis.title.x=element_blank(),
+        axis.text.x = element_text(color="black"),
+        axis.text.y = element_text(color="black"))+
+  geom_segment(y=2,x=0.5,yend=2,xend=6.5,linetype="dashed")+
+  scale_fill_brewer(palette = 6,type = "qual")+ylab(expression(beta*"NTI"))+ylim(0,17)
 
 
 
