@@ -1,4 +1,4 @@
-#require data from <Post-hoc Selection &Sensitive Analysis>
+#require .RData from 2 Specialists Selection and Sensitivity Analysis
 library(GUniFrac)
 library(vegan)
 library(ggplot2)
@@ -8,6 +8,7 @@ library(picante)
 library(reshape2)
 library(data.table)
 source("myfunc.R")
+load("..\\2 Specialists Selection and Sensitivity Analysis\\.RData")
 
 Specialist<-rare[sample(isPyOM,1e2,replace =T),Sig.rare]+
   rare[sample(isUnburnt,1e2,replace =T),Sig.rare] #averaging both PyOM and Unburnt samples
@@ -90,4 +91,5 @@ MockPic<-grid.arrange(plots[[1]],plots[[2]],plots[[3]],plots[[4]],plots[[5]],
                       layout_matrix=layout,nrow=1)
 combined<-arrangeGrob(MockPic,legend,ncol = 1,heights = unit.c(unit(1, "npc") - lheight, lheight))
 grid.newpage()
+#Fig 6 a&b
 grid.draw(combined)
